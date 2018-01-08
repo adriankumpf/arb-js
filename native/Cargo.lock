@@ -1,7 +1,7 @@
 [[package]]
 name = "abacom-relay-board"
 version = "0.1.0"
-source = "git+https://github.com/adriankumpf/abacom-relay-board#8de9889eebba265aa5493a2d2b760010265054fc"
+source = "git+https://github.com/adriankumpf/abacom-relay-board#17ed9d884c1e0438f398eb21ab045e860c75b8cc"
 dependencies = [
  "clap 2.29.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "libusb 0.3.0 (git+https://github.com/adriankumpf/libusb-rs?branch=dev)",
