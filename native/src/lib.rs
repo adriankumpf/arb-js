@@ -2,37 +2,50 @@ extern crate abacom_relay_board;
 #[macro_use]
 extern crate neon;
 
-use neon::vm::{Call, JsResult};
+use neon::vm::{Call, JsResult, Throw};
 use neon::js::{JsArray, JsBoolean, JsNumber, JsUndefined};
 use neon::js::error::{JsError, Kind};
 
-fn activate(call: Call) -> JsResult<JsUndefined> {
+struct Args {
+    relays: u8,
+    port: Option<u8>,
+    verify: bool,
+}
+
+fn parse_args(call: Call) -> Result<Args, Throw> {
     let scope = call.scope;
     let args = call.arguments;
 
-    let relays_array = args.require(scope, 0)?.check::<JsArray>()?.to_vec(scope);
-
-    let verify = args.require(scope, 1)?.check::<JsBoolean>()?.value();
-
-    let port = match args.require(scope, 2)?.check::<JsNumber>() {
-        Err(_) => None,
-        Ok(p) => Some(p.value() as u8),
-    };
-
     let mut relays = Vec::new();
 
-    for r in relays_array?.iter() {
-        let relay = r.check::<JsNumber>()?.value();
-        relays.push(relay);
+    for r in args.require(scope, 0)?.check::<JsArray>()?.to_vec(scope)? {
+        relays.push(r.check::<JsNumber>()?.value());
     }
 
     let relays = relays
         .iter()
-        .filter(|&&r| r != 0.0)
         .map(|&r| r as u8)
+        .filter(|&r| r != 0)
         .fold(0, |acc, r| acc | 1 << (r - 1));
 
-    if let Err(err) = abacom_relay_board::switch_relays(relays, verify, port) {
+    let verify = args.require(scope, 1)?.check::<JsBoolean>()?.value();
+
+    let port = args.require(scope, 2)?
+        .check::<JsNumber>()
+        .map(|p| p.value() as u8)
+        .ok();
+
+    Ok(Args {
+        relays,
+        verify,
+        port,
+    })
+}
+
+fn activate(call: Call) -> JsResult<JsUndefined> {
+    let args = parse_args(call)?;
+
+    if let Err(err) = abacom_relay_board::switch_relays(args.relays, args.verify, args.port) {
         return JsError::throw(Kind::Error, format!("{}", err).as_str());
     }
 
