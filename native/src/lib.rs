@@ -1,4 +1,4 @@
-extern crate abacom_relay_board;
+extern crate arb;
 #[macro_use]
 extern crate neon;
 
@@ -45,7 +45,7 @@ fn parse_args(call: Call) -> Result<Args, Throw> {
 fn activate(call: Call) -> JsResult<JsUndefined> {
     let args = parse_args(call)?;
 
-    if let Err(err) = abacom_relay_board::switch_relays(args.relays, args.verify, args.port) {
+    if let Err(err) = arb::set_status(args.relays, args.verify, args.port) {
         return JsError::throw(Kind::Error, format!("{}", err).as_str());
     }
 
