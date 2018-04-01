@@ -14,4 +14,4 @@ neon-build = "0.1.22"
 
 [dependencies]
 neon = "0.1.22"
-abacom-relay-board = { git = "https://github.com/adriankumpf/abacom-relay-board" }
+arb = { git = "https://github.com/adriankumpf/abacom-relay-board", tag = 'v0.1.0' }
