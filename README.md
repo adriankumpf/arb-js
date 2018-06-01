@@ -13,7 +13,7 @@ In order to compile a recent version of `rust` must be installed. Also, the nati
 Add `arb` to your list of dependencies:
 
 ```plain
-npm i adriankumpf/arb-js#semver:v0.1.0
+npm i adriankumpf/arb-js#semver:v0.2.0
 ```
 
 ## Usage
