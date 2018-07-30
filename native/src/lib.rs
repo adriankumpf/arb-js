@@ -1,10 +1,9 @@
-extern crate arb;
 #[macro_use]
 extern crate neon;
+extern crate arb;
 
-use neon::vm::{Call, JsResult, Throw};
-use neon::js::{JsArray, JsBoolean, JsNumber, JsUndefined};
-use neon::js::error::{JsError, Kind};
+use neon::prelude::*;
+use neon::result::Throw;
 
 struct Args {
     relays: u8,
@@ -12,14 +11,11 @@ struct Args {
     verify: bool,
 }
 
-fn parse_args(call: Call) -> Result<Args, Throw> {
-    let scope = call.scope;
-    let args = call.arguments;
-
+fn parse_args(cx: &mut FunctionContext) -> Result<Args, Throw> {
     let mut relays = Vec::new();
 
-    for r in args.require(scope, 0)?.check::<JsArray>()?.to_vec(scope)? {
-        relays.push(r.check::<JsNumber>()?.value());
+    for r in cx.argument::<JsArray>(0)?.to_vec(cx)? {
+        relays.push(r.downcast::<JsNumber>().or_throw(cx)?.value());
     }
 
     let relays = relays
@@ -28,12 +24,9 @@ fn parse_args(call: Call) -> Result<Args, Throw> {
         .filter(|&r| r != 0)
         .fold(0, |acc, r| acc | 1 << (r - 1));
 
-    let verify = args.require(scope, 1)?.check::<JsBoolean>()?.value();
+    let verify = cx.argument::<JsBoolean>(1)?.value();
 
-    let port = args.require(scope, 2)?
-        .check::<JsNumber>()
-        .map(|p| p.value() as u8)
-        .ok();
+    let port = cx.argument::<JsNumber>(2).map(|p| p.value() as u8).ok();
 
     Ok(Args {
         relays,
@@ -42,14 +35,14 @@ fn parse_args(call: Call) -> Result<Args, Throw> {
     })
 }
 
-fn activate(call: Call) -> JsResult<JsUndefined> {
-    let args = parse_args(call)?;
+fn activate(mut cx: FunctionContext) -> JsResult<JsUndefined> {
+    let args = parse_args(&mut cx)?;
 
     if let Err(err) = arb::set_status(args.relays, args.verify, args.port) {
-        return JsError::throw(Kind::Error, format!("{}", err).as_str());
+        return cx.throw_error(format!("{}", err).as_str());
     }
 
     Ok(JsUndefined::new())
 }
 
-register_module!(m, { m.export("activate", activate) });
+register_module!(mut cx, { cx.export_function("activate", activate) });

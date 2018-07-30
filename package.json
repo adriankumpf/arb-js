@@ -1,12 +1,12 @@
 {
   "name": "arb",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "",
   "main": "lib/index.js",
   "author": "Adrian Kumpf <adrian.kumpf@posteo.de>",
   "license": "MIT",
   "dependencies": {
-    "neon-cli": "^0.1.22"
+    "neon-cli": "^0.2.0"
   },
   "scripts": {
     "install": "neon build"
