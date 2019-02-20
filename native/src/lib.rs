@@ -1,6 +1,6 @@
 #[macro_use]
 extern crate neon;
-extern crate arb;
+use arb;
 
 use neon::prelude::*;
 use neon::result::Throw;
@@ -11,7 +11,7 @@ struct Args {
     verify: bool,
 }
 
-fn parse_args(cx: &mut FunctionContext) -> Result<Args, Throw> {
+fn parse_args(cx: &mut FunctionContext<'_>) -> Result<Args, Throw> {
     let mut relays = Vec::new();
 
     for r in cx.argument::<JsArray>(0)?.to_vec(cx)? {
@@ -25,7 +25,6 @@ fn parse_args(cx: &mut FunctionContext) -> Result<Args, Throw> {
         .fold(0, |acc, r| acc | 1 << (r - 1));
 
     let verify = cx.argument::<JsBoolean>(1)?.value();
-
     let port = cx.argument::<JsNumber>(2).map(|p| p.value() as u8).ok();
 
     Ok(Args {
@@ -35,7 +34,7 @@ fn parse_args(cx: &mut FunctionContext) -> Result<Args, Throw> {
     })
 }
 
-fn activate(mut cx: FunctionContext) -> JsResult<JsUndefined> {
+fn activate(mut cx: FunctionContext<'_>) -> JsResult<'_, JsUndefined> {
     let args = parse_args(&mut cx)?;
 
     if let Err(err) = arb::set_status(args.relays, args.verify, args.port) {
