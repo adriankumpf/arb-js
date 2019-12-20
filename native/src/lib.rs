@@ -1,7 +1,3 @@
-#[macro_use]
-extern crate neon;
-use arb;
-
 use neon::prelude::*;
 use neon::result::Throw;
 
