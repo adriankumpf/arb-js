@@ -13,7 +13,7 @@ In order to compile a recent version of `rust` must be installed. Also, the nati
 Add `arb` to your list of dependencies:
 
 ```plain
-npm i adriankumpf/arb-js#v0.4.0
+npm i adriankumpf/arb-js#v0.5.0
 ```
 
 ## Usage
@@ -28,5 +28,5 @@ undefined
 
 ## See also
 
-* [abacom-relay-board](https://github.com/adriankumpf/abacom-relay-board)
-* [arb-ex](https://github.com/adriankumpf/arb-ex)
+- [abacom-relay-board](https://github.com/adriankumpf/abacom-relay-board)
+- [arb-ex](https://github.com/adriankumpf/arb-ex)
