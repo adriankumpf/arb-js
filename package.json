@@ -6,7 +6,7 @@
   "author": "Adrian Kumpf <adrian.kumpf@posteo.de>",
   "license": "MIT",
   "dependencies": {
-    "neon-cli": "^0.4.0"
+    "neon-cli": "^0.5.3"
   },
   "scripts": {
     "install": "neon build --release"
