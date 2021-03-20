@@ -11,8 +11,8 @@ name = "arb"
 crate-type = ["cdylib"]
 
 [build-dependencies]
-neon-build = "0.6.0"
+neon-build = "0.7.1"
 
 [dependencies]
-neon = "0.6.0"
-arb = { git = "https://github.com/adriankumpf/abacom-relay-board", tag = 'v0.5.0' }
+neon = "0.7.1"
+arb = { git = "https://github.com/adriankumpf/abacom-relay-board", tag = 'v0.5.1' }
