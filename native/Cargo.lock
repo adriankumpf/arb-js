@@ -15,7 +15,7 @@ version = "0.4.0"
 dependencies = [
  "arb 0.5.1",
  "neon",
- "neon-build",
+ "neon-build 0.9.0",
 ]
 
 [[package]]
@@ -76,7 +76,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7d33fe11bcc59e19cadfabd6a90ac07038eddc357f6effa25a731dd3ae7f40d6"
 dependencies = [
  "cslice",
- "neon-build",
+ "neon-build 0.8.2",
  "neon-runtime",
  "semver",
  "smallvec",
@@ -90,6 +90,12 @@ checksum = "c6fe902d44ec11ccd34980b5de63b96a79ce96e231de976338166c34c43bd70b"
 dependencies = [
  "neon-sys",
 ]
+
+[[package]]
+name = "neon-build"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "067f30e1bb8bec9a0f2be115fd54430dd66472872c7c1491473618a405c1daac"
 
 [[package]]
 name = "neon-runtime"

@@ -11,7 +11,7 @@ name = "arb"
 crate-type = ["cdylib"]
 
 [build-dependencies]
-neon-build = "0.8.1"
+neon-build = "0.9.0"
 
 [dependencies]
 neon = "0.8.2"
